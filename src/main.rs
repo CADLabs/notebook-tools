@@ -6,6 +6,7 @@ use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
 
+use clap::clap_app;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Cell {
@@ -38,7 +39,15 @@ fn filter(cell: &Cell) -> bool {
 }
 
 fn main() {
-    let notebook: Notebook = read_notebook_from_file("input.ipynb").unwrap();
+    let matches = clap_app!(myapp =>
+        (version: "1.0")
+        (author: "Ben Scholtz")
+        (about: "Jupyter Notebook tools")
+        (@arg input: +required "Sets the input file")
+    ).get_matches();
+
+    let notebook_source = matches.value_of("input").unwrap();
+    let notebook: Notebook = read_notebook_from_file(notebook_source).unwrap();
 
     let cells: Vec<Cell> = notebook.cells
         .into_iter()
