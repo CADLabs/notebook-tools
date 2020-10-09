@@ -66,7 +66,6 @@ fn main() {
         .filter(|cell| {
             if matches.is_present("filter_cells") {
                 let tag: String = matches.value_of("filter_cells").unwrap().into();
-                // &String::from("background-color")
                 match cell.cell_type {
                     CellType::code => !tag_in_source(&cell.source, &tag),
                     CellType::markdown => !tag_in_source(&cell.source, &tag),
